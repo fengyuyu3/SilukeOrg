@@ -78,7 +78,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'SilukeOrg.pipelines.SilukeorgPipeline': 300,
+   'SilukeOrg.pipelines.SilukeorgPipeline': 301,
    # 'SilukeOrg.pipelines.SilukeorgMySqlPipline': 300,
    'scrapy_redis.pipelines.RedisPipeline': 200
 }

@@ -12,9 +12,10 @@ import copy
 
 class SilukeorgPipeline(object):
     def process_item(self, item, spider):
-        file_dir = os.path.dirname(os.path.abspath(__file__))+"\\"+item["type"]
-        if not os.path.exists(file_dir):
-            os.makedirs(file_dir)
+        # file_dir = os.path.dirname(os.path.abspath(__file__))+"\\"+item["type"]
+        # if not os.path.exists(file_dir):
+        #     os.makedirs(file_dir)
+        file_dir = os.path.dirname(os.path.abspath(__file__))
         filename = item["name"]+".txt"
         f = open(file_dir+"\\"+filename, "ab")
         content = str(item["content"])

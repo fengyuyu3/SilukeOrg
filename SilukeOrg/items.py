@@ -28,7 +28,8 @@ class SilukeMySqlItem(scrapy.Item):
         insert_sql = """
             insert into story_list(name, author, word_num,create_time,url
               ) VALUES ( %s, %s, %s, %s, %s)
-              ON DUPLICATE KEY UPDATE name=VALUES(name)
+              ON DUPLICATE KEY UPDATE author=VALUES(author),create_time=VALUES(create_time),url=VALUES(url),
+              word_num=VALUES(word_num)
         """
 
         create_time = datetime.datetime.fromtimestamp(time.time()).strftime(SQL_DATETIME_FORMAT)
