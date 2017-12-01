@@ -15,20 +15,20 @@ BOT_NAME = 'SilukeOrg'
 SPIDER_MODULES = ['SilukeOrg.spiders']
 NEWSPIDER_MODULE = 'SilukeOrg.spiders'
 RETRY_TIMES = 10
-RETRY_HTTP_CODES = [443, 8118, 808, 53281, 8123, 8888, 80, 500, 503, 504, 400, 403, 404, 408]
-# PROXY_LIST = os.path.dirname(os.path.abspath(__file__))+"\list.txt"
-# PROXY_MODE = 0
+RETRY_HTTP_CODES = [443, 8118, 808, 53281, 8123, 8888, 80, 500, 503, 504, 400, 403, 404, 408, 53281, 3128, 51552, 81, 65309, 55555]
+PROXY_LIST = os.path.dirname(os.path.abspath(__file__))+"\list.txt"
+PROXY_MODE = 0
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'SilukeOrg (+http://www.yourdomain.com)'
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
+# USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
-# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -59,9 +59,14 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   # 'SilukeOrg.middlewares.MyCustomDownloaderMiddleware': 543,
-   # 'scrapy_proxies.RandomProxy': 100,
+   'SilukeOrg.middlewares.SilukeorgSpiderMiddleware': 543,
    # 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
+    'SilukeOrg.middlewares.RandomUserAgentMiddlware': 545,
+   'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+   # 'scrapy.downloadermiddlewares.useragent.HttpProxyMiddleware': None,
+   'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
+   'scrapy_proxies.RandomProxy': 100,
+   'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
 }
 
 # Enable or disable extensions
@@ -73,7 +78,9 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'SilukeOrg.pipelines.SilukeorgMySqlPipline': 300,
+   'SilukeOrg.pipelines.SilukeorgPipeline': 300,
+   # 'SilukeOrg.pipelines.SilukeorgMySqlPipline': 300,
+   'scrapy_redis.pipelines.RedisPipeline': 200
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

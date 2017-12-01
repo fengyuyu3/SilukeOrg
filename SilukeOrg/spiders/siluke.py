@@ -2,14 +2,17 @@
 import scrapy
 import redis
 from SilukeOrg.items import SilukeMySqlItem
+from scrapy_redis.spiders import RedisSpider
+import redis
 
-class SilukeSpider(scrapy.Spider):
+class SilukeSpider(RedisSpider):
     name = 'siluke'
     allowed_domains = ['www.siluke.org']
-    # start_urls = ['http://www.siluke.org/top/lastupdate_1.html']
-    start_urls = ['http://www.siluke.org/top/lastupdate_3479.html']
-    # pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
-    # r = redis.Redis(connection_pool=pool)
+    # start_urls = ['http://www.siluke.org/top/allvisit_1.html']
+    # start_urls = ['http://www.siluke.org/top/lastupdate_3479.html']
+    pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
+    r = redis.Redis(connection_pool=pool)
+    redis_key = "siluke:start_urls"
 
     def parse(self, response):
         item = SilukeMySqlItem()
@@ -21,11 +24,9 @@ class SilukeSpider(scrapy.Spider):
             item["word_num"] = content.xpath('./td[@class="R"]/text()').extract()[0]
             url = text+"index.html"
             item["url"] = url
-            # self.r.lpush("siluke_detail", url)
+            self.r.lpush("siluke_detail:start_urls", url)
             yield item
         page_next = len(response.xpath('//div[@class="pagelink"]/a[@class="next"]/@href').extract())
         if page_next == 1:
             page_next_url = response.xpath('//div[@class="pagelink"]/a[@class="next"]/@href').extract()[0]
             yield scrapy.Request(page_next_url, callback=self.parse)
-        # yield scrapy.Request(url, callback=self.parse)
-        # print(contents)

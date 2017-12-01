@@ -17,7 +17,7 @@ class SilukeorgPipeline(object):
             os.makedirs(file_dir)
         filename = item["name"]+".txt"
         f = open(file_dir+"\\"+filename, "ab")
-        content = str(item["url"])
+        content = str(item["content"])
         f.write(content.encode("utf-8"))
         f.close()
         return item

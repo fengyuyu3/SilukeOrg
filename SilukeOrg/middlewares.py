@@ -6,7 +6,7 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
-
+from fake_useragent import UserAgent
 
 class SilukeorgSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
@@ -54,4 +54,18 @@ class SilukeorgSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+class RandomUserAgentMiddlware(object):
+    def __init__(self, crawler):
+        super(RandomUserAgentMiddlware, self).__init__()
+        self.ua = UserAgent()
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
+    def process_request(self, request, spider):
+        print(self.ua.random)
+        request.headers.setdefault("User-Agent", self.ua.random)
+        # request.meta["proxy"] = "http://27.219.38.130:8181" #设置代理
 

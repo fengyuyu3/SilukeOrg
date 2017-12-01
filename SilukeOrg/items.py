@@ -15,7 +15,7 @@ class SilukeorgItem(scrapy.Item):
     # name = scrapy.Field()
     type = scrapy.Field()
     name = scrapy.Field()
-    url = scrapy.Field()
+    content = scrapy.Field()
 
 class SilukeMySqlItem(scrapy.Item):
     name = scrapy.Field()
